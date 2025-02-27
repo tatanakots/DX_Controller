@@ -1,0 +1,5 @@
+Production/PCB/*/
+*-backups
+.editorconfig
+.vscode
+
