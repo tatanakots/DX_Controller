@@ -31,9 +31,7 @@ jobs:
           rm -rf build
           mkdir build
           cd build
-          # 若需要设置 PICO_TOOLCHAIN_PATH，可取消注释下面一行并修改路径
-          # cmake .. -G Ninja -DPICO_TOOLCHAIN_PATH="/usr/bin/arm-none-eabi-gcc"
-          cmake .. -G Ninja
+          cmake .. -G Ninja -DPICO_SDK_FETCH_FROM_GIT=on
           ninja
           cd ..
 
