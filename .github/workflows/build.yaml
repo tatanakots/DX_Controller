@@ -1,0 +1,41 @@
+name: Build Tatanako TDX IO Firmware
+
+on:
+  push:
+    paths:
+      - 'firmware/**'
+  pull_request:
+    paths:
+      - 'firmware/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          # 安装 Ninja、CMake 以及 ARM 交叉编译工具链
+          sudo apt-get install -y ninja-build cmake build-essential gcc-arm-none-eabi
+
+      - name: Build Firmware
+        working-directory: firmware
+        run: |
+          rm -rf build
+          mkdir build
+          cd build
+          # 若需要设置 PICO_TOOLCHAIN_PATH，可取消注释下面一行并修改路径
+          # cmake .. -G Ninja -DPICO_TOOLCHAIN_PATH="/usr/bin/arm-none-eabi-gcc"
+          cmake .. -G Ninja
+          ninja
+          cd ..
+
+      - name: Upload UF2 Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: tdx-io-uf2
+          path: tdx_firmware.uf2

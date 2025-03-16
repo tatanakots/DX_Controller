@@ -1,5 +1,6 @@
 build
 mai_pico.uf2
+tdx_firmware.uf2
 pico-examples
 pico-sdk
 .vscode
