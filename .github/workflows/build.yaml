@@ -33,10 +33,9 @@ jobs:
           cd build
           cmake .. -G Ninja -DPICO_SDK_FETCH_FROM_GIT=on
           ninja
-          cd ..
 
       - name: Upload UF2 Artifact
         uses: actions/upload-artifact@v4
         with:
           name: tdx_firmware
-          path: tdx_firmware.uf2
+          path: src/tdx_firmware.uf2
