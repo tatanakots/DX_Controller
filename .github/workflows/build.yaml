@@ -4,9 +4,12 @@ on:
   push:
     paths:
       - 'firmware/**'
+      - '.github/workflows/build.yaml'
   pull_request:
     paths:
       - 'firmware/**'
+      - '.github/workflows/build.yaml'
+  workflow_dispatch:
 
 jobs:
   build:
