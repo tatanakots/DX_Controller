@@ -85,7 +85,7 @@ jobs:
       - name: Upload All Firmwares
         run: |
           mkdir out
-          cp tdx_firmware_pico/tdx_firmware.uf2 out/tdx_firmware_rp2040.uf2
+          cp tdx_firmware_rp2040/tdx_firmware.uf2 out/tdx_firmware_rp2040.uf2
           cp tdx_firmware_rp2350/tdx_firmware.uf2 out/tdx_firmware_rp2350.uf2
 
       - name: Upload Combined Firmware Zip
