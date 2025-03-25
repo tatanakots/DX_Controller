@@ -20,28 +20,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Cache APT packages
-        uses: actions/cache@v4
-        with:
-          path: |
-            /var/cache/apt
-            /var/lib/apt
-          key: apt-${{ runner.os }}-v1
-
       - name: Install APT Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y ninja-build cmake build-essential gcc-arm-none-eabi
-
-      - name: Cache Pico SDK and CMake downloads
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cmake
-            ~/.cache
-          key: pico-sdk-${{ hashFiles('firmware/CMakeLists.txt') }}
-          restore-keys: |
-            pico-sdk-
 
       - name: Build RP2350 Firmware
         working-directory: firmware
@@ -58,56 +40,38 @@ jobs:
           path: firmware/build-rp2350/src/tdx_firmware.uf2
           if-no-files-found: error
 
-  build-pico:
-    name: Build Firmware for Pico
+  build-rp2040:
+    name: Build Firmware for RP2040
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Cache APT packages
-        uses: actions/cache@v4
-        with:
-          path: |
-            /var/cache/apt
-            /var/lib/apt
-          key: apt-${{ runner.os }}-v1
-
       - name: Install APT Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y ninja-build cmake build-essential gcc-arm-none-eabi
-
-      - name: Cache Pico SDK and CMake downloads
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cmake
-            ~/.cache
-          key: pico-sdk-${{ hashFiles('firmware/CMakeLists.txt') }}
-          restore-keys: |
-            pico-sdk-
 
       - name: Build Pico Firmware
         working-directory: firmware
         run: |
           mkdir build-pico
           cd build-pico
-          cmake .. -G Ninja -DPICO_PLATFORM=pico -DPICO_SDK_FETCH_FROM_GIT=on
+          cmake .. -G Ninja -DPICO_PLATFORM=rp2040 -DPICO_SDK_FETCH_FROM_GIT=on
           ninja
 
       - name: Upload UF2 Artifact (pico)
         uses: actions/upload-artifact@v4
         with:
-          name: tdx_firmware_pico
+          name: tdx_firmware_rp2040
           path: firmware/build-pico/src/tdx_firmware.uf2
           if-no-files-found: error
 
   summarize:
     name: Summarize Artifacts
     runs-on: ubuntu-latest
-    needs: [build-rp2350, build-pico]
+    needs: [build-rp2350, build-rp2040]
 
     steps:
       - name: Download All Artifacts
@@ -121,7 +85,7 @@ jobs:
       - name: Upload All Firmwares
         run: |
           mkdir out
-          cp tdx_firmware_pico/tdx_firmware.uf2 out/tdx_firmware_pico.uf2
+          cp tdx_firmware_pico/tdx_firmware.uf2 out/tdx_firmware_rp2040.uf2
           cp tdx_firmware_rp2350/tdx_firmware.uf2 out/tdx_firmware_rp2350.uf2
 
       - name: Upload Combined Firmware Zip
