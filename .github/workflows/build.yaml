@@ -12,7 +12,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  setup:
+    name: Setup Environment
     runs-on: ubuntu-latest
 
     steps:
@@ -22,21 +23,67 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt-get update
-          # 安装 Ninja、CMake 以及 ARM 交叉编译工具链
           sudo apt-get install -y ninja-build cmake build-essential gcc-arm-none-eabi
 
-      - name: Build Firmware
+  build-rp2350:
+    name: Build Firmware for RP2350
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build RP2350 Firmware
         working-directory: firmware
         run: |
-          rm -rf build
-          mkdir build
-          cd build
-          cmake .. -G Ninja -DPICO_SDK_FETCH_FROM_GIT=on
+          mkdir build-rp2350
+          cd build-rp2350
+          cmake .. -G Ninja -DPICO_PLATFORM=rp2350 -DPICO_SDK_FETCH_FROM_GIT=on
           ninja
 
-      - name: Upload UF2 Artifact
+      - name: Upload UF2 Artifact (rp2350)
         uses: actions/upload-artifact@v4
         with:
-          name: tdx_firmware
-          path: firmware/build/src/tdx_firmware.uf2
+          name: tdx_firmware_rp2350
+          path: firmware/build-rp2350/src/tdx_firmware.uf2
           if-no-files-found: error
+
+  build-pico:
+    name: Build Firmware for Pico
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build Pico Firmware
+        working-directory: firmware
+        run: |
+          mkdir build-pico
+          cd build-pico
+          cmake .. -G Ninja -DPICO_PLATFORM=pico -DPICO_SDK_FETCH_FROM_GIT=on
+          ninja
+
+      - name: Upload UF2 Artifact (pico)
+        uses: actions/upload-artifact@v4
+        with:
+          name: tdx_firmware_pico
+          path: firmware/build-pico/src/tdx_firmware.uf2
+          if-no-files-found: error
+
+  # summarize:
+  #   name: Summarize Artifacts
+  #   runs-on: ubuntu-latest
+  #   needs: [build-rp2350, build-pico]
+
+  #   steps:
+  #     - name: Download All Artifacts
+  #       uses: actions/download-artifact@v4
+
+  #     - name: List Downloaded Files
+  #       run: |
+  #         echo "Contents of downloaded artifacts:"
+  #         ls -R
+

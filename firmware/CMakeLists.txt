@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-set(PICO_PLATFORM "rp2350") # TDX Bord Uses RP2
+# set(PICO_PLATFORM "rp2350") # TDX Bord Uses RP2
 
 
 # Pull in SDK (must set be before project)
