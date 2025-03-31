@@ -165,14 +165,14 @@ static char joy_name_string[128] = "I/O CONTROL BD;15257;01;90;1831;6679A;00;GOU
 static const char *string_desc_arr[] = {
     (const char[]){0x09, 0x04},  // 0: is supported language is English (0x0409)
     "SEGA", // 1: Manufacturer
-    "TDX Controllor", // 2: Product
+    "TDX Controller", // 2: Product
     serial_number_str, // 3: Serials, use chip ID
     joy_name_string,
-    "TDX Controllor NKRO",
-    "TDX Controllor Command Line Port",
-    "TDX Controllor Touch Port",
-    "TDX Controllor LED Port",
-    "TDX Controllor AIME Port",
+    "TDX Controller NKRO",
+    "TDX Controller Command Line Port",
+    "TDX Controller Touch Port",
+    "TDX Controller LED Port",
+    "TDX Controller AIME Port",
 };
 
 // Invoked when received GET STRING DESCRIPTOR request
@@ -213,5 +213,5 @@ uint16_t const* tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 
 void usb_descriptors_disable_io4()
 {
-    strcpy(joy_name_string, "TDX Controllor Joystick");
+    strcpy(joy_name_string, "TDX Controller Joystick");
 }

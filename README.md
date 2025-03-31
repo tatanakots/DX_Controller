@@ -14,14 +14,14 @@
 
 | 串口名称 | 1P端口号 | 2P端口号 |
 | ------- | -------- | -------- |
-| TDX Controllor Command Line Port | 不重复的随意端口号 | 不重复的随意端口号 |
-| TDX Controllor Touch Port | COM3 | COM4 |
-| TDX Controllor LED Port | COM21 | COM23 |
-| TDX Controllor AIME Port | COM1 | 仅需设置一个即可，无法同时使用两个读卡器 |
+| TDX Controller Command Line Port | 不重复的随意端口号 | 不重复的随意端口号 |
+| TDX Controller Touch Port | COM3 | COM4 |
+| TDX Controller LED Port | COM21 | COM23 |
+| TDX Controller AIME Port | COM1 | 仅需设置一个即可，无法同时使用两个读卡器 |
 
 ### 命令行使用说明
 
-可以通过[这个链接](https://googlechromelabs.github.io/serial-terminal/)打开命令行工具，选择 `TDX Controllor Command Line Port` 连接后按提示使用即可。
+可以通过[这个链接](https://googlechromelabs.github.io/serial-terminal/)打开命令行工具，选择 `TDX Controller Command Line Port` 连接后按提示使用即可。
 
 ### 关于授权
 

@@ -47,7 +47,9 @@ static inline bool button_pressed(int id)
     bool reading = gpio_get(gpio_real[id]);
     bool active_level = id < 8 ? mai_cfg->tweak.main_button_active_high :
                                  mai_cfg->tweak.aux_button_active_high;
-
+    // if(id == 0){ // 如果你只想测试一号键连接到光眼按键的话，可以使用这里的代码
+    //     return reading == 1;
+    // }
     return reading == active_level;
 }
 
